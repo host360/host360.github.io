@@ -41,7 +41,7 @@
             background-color: var(--red);
             color: var(--highlight-color);
         }
-        h1 {
+        h1, h2, h3 {
             text-align: center;
             text-shadow: 0 0 10px var(--text-color);
             font-size: 2.5em;
@@ -63,7 +63,7 @@
                 background-position: 100% 50%;
             }
         }
-        .paragraph-box, .discord-invite {
+        .paragraph-box, .discord-invite, .most-wanted {
             background-color: rgba(156, 39, 176, 0.1);
             border: 1px solid var(--text-color);
             border-radius: 8px;
@@ -73,7 +73,7 @@
             transition: all 0.3s ease;
             position: relative;
         }
-        .paragraph-box:hover, .discord-invite:hover {
+        .paragraph-box:hover, .discord-invite:hover, .most-wanted:hover {
             transform: translateY(-5px);
             box-shadow: 0 5px 17px rgba(156, 39, 176, 0.3);
         }
@@ -97,6 +97,13 @@
             text-align: center;
             font-weight: bold;
             cursor: pointer;
+        }
+        .most-wanted img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            border-radius: 8px;
         }
     </style>
 </head>
@@ -134,10 +141,10 @@
 
         <!-- Mekanik's Most Wanted / Targeted -->
         <h1>Mekanik's Most Wanted / Targeted</h1>
-        <div class="paragraph-box">
+        <div class="most-wanted paragraph-box">
             <h2 class="contrast-text">Free Nitro Scammer</h2>
             <img src="s1.png" alt="Free Nitro Scammer Image">
-            <p class="contrast-text">The free nitro scammer was found among YouTube users, attempting to deceive victims into running an executable file under false promises of generating Discord Nitro. Our team decompiled the file and uncovered malicious logging activities. The scammer openly admitted ownership on their channel, but later claimed the account was hacked when confronted on the scamming activity. Despite their claim, our investigation revealed they were still active on the compromised account. This marks the scammer's strike 2, and legal actions will be pursued if they reappear.</p>
+            <p class="contrast-text">The free nitro scammer was found among YouTube users, attempting to deceive victims into running an executable file that claimed to generate Discord Nitro. Mekanik and its team decompiled the file and uncovered malicious logging activities. The scammer even admitted ownership on their channel. Subsequently, the channel claimed it was hacked, yet this was a tactic to avoid accountability. Legal actions are pending as this marks the scammer's strike 2 on our watch.</p>
         </div>
     </div>
 
