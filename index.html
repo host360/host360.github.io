@@ -7,7 +7,7 @@
     <style>
         :root {
             --bg-color: #1e1e1e;
-            --text-color: #9c27b0; /* Purple */
+            --text-color: #9c27b0;
             --highlight-color: #ffffff;
             --pink: #e91e63;
             --red: #ff1744;
@@ -20,12 +20,12 @@
             margin: 0;
             padding: 20px;
             cursor: none;
-            pointer-events: none; /* Disable all pointer events initially */
+            pointer-events: none;
         }
         .container {
             max-width: 800px;
             margin: 0 auto;
-            pointer-events: auto; /* Re-enable pointer events for container */
+            pointer-events: auto;
         }
         .random-message-bar, .announcement-bar {
             text-align: center;
@@ -64,18 +64,18 @@
             }
         }
         .paragraph-box, .discord-invite {
-            background-color: rgba(156, 39, 176, 0.1); /* Purple with opacity */
+            background-color: rgba(156, 39, 176, 0.1);
             border: 1px solid var(--text-color);
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 20px;
-            box-shadow: 0 0 15px rgba(156, 39, 176, 0.2); /* Purple shadow */
+            box-shadow: 0 0 15px rgba(156, 39, 176, 0.2);
             transition: all 0.3s ease;
             position: relative;
         }
         .paragraph-box:hover, .discord-invite:hover {
             transform: translateY(-5px);
-            box-shadow: 0 5px 17px rgba(156, 39, 176, 0.3); /* Purple shadow on hover */
+            box-shadow: 0 5px 17px rgba(156, 39, 176, 0.3);
         }
         #custom-cursor {
             width: 20px;
@@ -87,10 +87,10 @@
             z-index: 9999;
         }
         .contrast-text {
-            background-image: linear-gradient(45deg, var(--pink), var(--red)); /* Pink to red gradient */
-            -webkit-background-clip: text; /* Clip text to gradient */
+            background-image: linear-gradient(45deg, var(--pink), var(--red));
+            -webkit-background-clip: text;
             background-clip: text;
-            color: transparent; /* Hide original text */
+            color: transparent;
             transition: background-position 0.3s ease;
         }
         .discord-invite {
@@ -99,58 +99,6 @@
             cursor: pointer;
         }
     </style>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const cursor = document.getElementById('custom-cursor');
-            
-            // Array of random messages
-            const messages = [
-                "Mekanik: D.D.D: Mekanik Discord Decompiling Dickheads",
-                "Did you know?: We get ourselves into trouble for YOUR online safety.",
-                "Most e-gangsters duck conversations with us because they know conversations will go public.",
-                "Mekanik was created after a minute of deciding to create a team.",
-                "LIVE COUNTER: Mekanik has 6 members, 4 of them are keeping you safe.",
-                "If we get into legal trouble, our tools will go public for you all to help yourself.",
-                "Mekanik is always here for you. Join our Discord if you would like help."
-            ];
-
-            // Select a random message
-            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-            
-            // Display the random message
-            document.getElementById('random-message').textContent = randomMessage;
-
-            // Check for developer tools
-            let devtoolsOpen = false;
-            setInterval(() => {
-                const widthThreshold = window.outerWidth - window.innerWidth > 100;
-                const heightThreshold = window.outerHeight - window.innerHeight > 100;
-                if (widthThreshold || heightThreshold) {
-                    devtoolsOpen = true;
-                    // Redirect to YouTube search on devtools open
-                    window.location.href = 'https://www.youtube.com/results?search_query=how+to+inspect+website+using+ctrl+%2B+shift+%2B+i+error.+Mekanik+Is+Sexy+https%3A%2F%2Fmekaniks.lol%2F';
-                }
-            }, 1000); // Check every second
-
-            // Optional: Prevent console methods if needed
-            const noop = () => {};
-            console.log = noop;
-            console.dir = noop;
-            console.warn = noop;
-            console.error = noop;
-            console.info = noop;
-
-            // Function to handle right-click context menu
-            document.addEventListener('contextmenu', (e) => {
-                e.preventDefault(); // Prevent default context menu
-            });
-
-            // Re-enable pointer events after a delay (to allow legitimate users access)
-            setTimeout(() => {
-                document.body.style.pointerEvents = 'auto';
-            }, 1000); // 1 second delay
-        });
-    </script>
 </head>
 <body>
     <div id="custom-cursor"></div>
@@ -179,9 +127,17 @@
         <div class="discord-invite">
             <p class="contrast-text">If you find a logger, please report it to us in our server so we can decompile it and fuck the silly skids up.: <a href="https://discord.gg/NekBTB6ZHr" target="_blank" rel="noopener noreferrer">Our Server</a></p>
         </div>
-        <h1>Authorities!</1>
+        <h1>Authorities!</h1>
         <div class="paragraph-box">
-            <p class="contrast-text">We DO NOT PROMOTE ILLEGAL ACTIVITIES. We stand highly against it. What Mekanik does is find people who are trying to Scam / Steal the personal information off of unsuspecting victims. And we do as much as we can to stop it. Anything we do will not harm the target at all. We stand against harming and doxxing. We instead take a nice approach warning them. That if they do carry on, either we take it in our own hands. Or we report it to proper authorities (DEPENDING ON HOW BAD THE SITUATION IS) if you do want to contact us however, and let us know if we are going too far. Please do. But unless that. We are not going to respond to you. We care about people, but you guys are not doing enough. Consider us exactly what you are. We are authorities. The authorities of Discord. We can do what you do, we can track people down for what they do. We can get them arrested. If anything, we are helping you. Your welcome. (note, im typing this all away in a rush. But it's all true)</p>
+            <p class="contrast-text">We DO NOT PROMOTE ILLEGAL ACTIVITIES. We stand highly against it. What Mekanik does is find people who are trying to Scam / Steal the personal information off of unsuspecting victims. And we do as much as we can to stop it. Anything we do will not harm the target at all. We stand against harming and doxxing. We instead take a nice approach warning them. That if they do carry on, either we take it in our own hands. Or we report it to proper authorities (DEPENDING ON HOW BAD THE SITUATION IS) if you do want to contact us however, and let us know if we are going too far. Please do. But unless that. We are not going to respond to you. We care about people, but you guys are not doing enough. Consider us exactly what you are. We are authorities. The authorities of Discord. We can do what you do, we can track people down for what they do. We can get them arrested. If anything, we are helping you. Your welcome.</p>
+        </div>
+
+        <!-- Mekanik's Most Wanted / Targeted -->
+        <h1>Mekanik's Most Wanted / Targeted</h1>
+        <div class="paragraph-box">
+            <h2 class="contrast-text">Free Nitro Scammer</h2>
+            <img src="s1.png" alt="Free Nitro Scammer Image">
+            <p class="contrast-text">The free nitro scammer was found among YouTube users, attempting to deceive victims into running an executable file under false promises of generating Discord Nitro. Our team decompiled the file and uncovered malicious logging activities. The scammer openly admitted ownership on their channel, but later claimed the account was hacked when confronted on the scamming activity. Despite their claim, our investigation revealed they were still active on the compromised account. This marks the scammer's strike 2, and legal actions will be pursued if they reappear.</p>
         </div>
     </div>
 
@@ -191,6 +147,7 @@
             const y = e.clientY;
             
             // Move custom cursor
+            const cursor = document.getElementById('custom-cursor');
             cursor.style.left = x + 'px';
             cursor.style.top = y + 'px';
             
@@ -221,11 +178,10 @@
             }
         });
 
-        // Prevent inspect element and console
-        window.addEventListener('keydown', function(e) {
-            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
-                window.location.href = 'https://www.youtube.com/results?search_query=how+to+hak+website+2024+mekanil.lol';
-            }
+        // Enable inspect element with right-click
+        window.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            window.location.href = 'https://www.youtube.com/results?search_query=how+to+hak+website+2024+mekanil.lol';
         });
     </script>
 </body>
