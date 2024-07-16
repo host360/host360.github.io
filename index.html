@@ -98,7 +98,7 @@
     <div id="custom-cursor"></div>
     <div class="container">
         <div class="random-message-bar" id="random-message"></div>
-        <div class="announcement-bar">Mekanik is currently NOT in legal trouble. 0 Members have been compromised.</div>
+        <div class="announcement-bar">Mekanik is currently NOT in legal trouble. 0 Members have been disbanded.</div>
         <h1>Mekanik</h1>
         <h2>Discord Decompiling Dickheads</h2>
         <div class="paragraph-box">
@@ -123,7 +123,7 @@
         </div>
         <h1>Authorities!</h1>
         <div class="paragraph-box">
-            <p class="contrast-text">We DO NOT PROMOTE ILLEGAL ACTIVITIES. We stand highly against it. What Mekanik does is find people who are trying to Scam / Steal the personal information off of unsuspecting victims. And we do as much as we can to stop it. Anything we do will not harm the target at all. We stand against harming and doxxing. We instead take a nice approach warning them. That if they do carry on, either we take it in our own hands. Or we report it to proper authorities (DEPENDING ON HOW BAD THE SITUATION IS) if you do want to contact us however, and let us know if we are going too far. Please do. But unless that. We are not going to respond to you. We care about people, but you guys are not doing enough. Consider us exactly what you are. We are authorities. The authorities of Discord. We can do what you do, we can track people down for what they do. We can get them arrested. If anything, we are helping you. You're welcome. (note, im typing this all away in a rush. But it's all true)</p>
+            <p class="contrast-text">We DO NOT PROMOTE ILLEGAL ACTIVITIES. We stand highly against it. What Mekanik does is find people who are trying to Scam / Steal the personal information off of unsuspecting victims. And we do as much as we can to stop it. Anything we do will not harm the target at all. We stand against harming and doxxing. We instead take a nice approach warning them. That if they do carry on, either we take it in our own hands. Or we report it to proper authorities (DEPENDING ON HOW BAD THE SITUATION IS) if you do want to contact us however, and let us know if we are going too far. Please do. But unless that. We are not going to respond to you. We care about people, but you guys are not doing enough. Consider us exactly what you are. We are authorities. The authorities of Discord. We can do what you do, we can track people down for what they do. We can get them arrested. If anything, we are helping you. Your welcome. (note, im typing this all away in a rush. But it's all true)</p>
         </div>
     </div>
 
@@ -135,7 +135,7 @@
                 "Did you know?: We get ourselves into trouble for YOUR online safety.",
                 "Most e-gangsters duck conversations with us because they know conversations will go public.",
                 "Mekanik was created after a minute of deciding to create a team.",
-                "LIVE COUNTER: Mekanik has 6 members, 5 of them are keeping you safe.",
+                "LIVE COUNTER: Mekanik has 6 members, 4 of them are keeping you safe.",
                 "If we get into legal trouble, our tools will go public for you all to help yourself.",
                 "Mekanik is always here for you. Join our Discord if you would like help."
             ];
@@ -151,7 +151,7 @@
                     const rect = text.getBoundingClientRect();
                     const distX = x - (rect.left + rect.width / 2);
                     const distY = y - (rect.top + rect.height / 2);
-                    const distance = Math.sqrt(distX * distY + distY * distY);
+                    const distance = Math.sqrt(distX * distX + distY * distY);
                     if (distance < 100) {
                         const intensity = 1 - distance / 100;
                         const bgPos = `${-50 + intensity * 100}%`;
@@ -167,6 +167,13 @@
                 } else {
                     cursor.style.transform = 'scale(1)';
                     cursor.style.mixBlendMode = 'normal';
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Control') {
+                    window.open('https://www.youtube.com/results?search_query=how+to+inspect+website+using+ctrl+%2B+shift+%2B+i+error.+Mekanik+Is+Sexy+https%3A%2F%2Fmekaniks.lol%2F', '_blank');
+                    location.reload();
                 }
             });
         });
