@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mekanik Announcements</title>
+    <style>
+        body, html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 1000px;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .announcement {
+            padding: 15px;
+            margin: 10px 0;
+            border-bottom: 1px solid #444;
+        }
+
+        .announcement:last-child {
+            border-bottom: none;
+        }
+
+        .announcement-title {
+            font-size: 1.5em;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff69b4, #8a2be2); /* Pink to purple gradient */
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: textGradientAnimation 10s ease infinite;
+            background-size: 200% 200%;
+        }
+
+        .announcement-date {
+            font-size: 0.9em;
+            color: #bbb;
+        }
+
+        .announcement-content {
+            margin-top: 10px;
+            font-size: 1.1em;
+            color: #ddd;
+        }
+
+        @keyframes textGradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="announcement">
+            <div class="announcement-title">Live URL updates</div>
+            <div class="announcement-date">July 17, 2024</div>
+            <div class="announcement-content">
+                <p>Our websites. https://mekaniks.lol/ https://mekaniks.lol/team/</p>
+            </div>
+        </div>
+        <div class="announcement">
+            <div class="announcement-title">Publicity</div>
+            <div class="announcement-date">July 16, 2024</div>
+            <div class="announcement-content">
+                <p>We are now public.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
