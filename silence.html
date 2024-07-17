@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scary Page</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        img {
+            display: none; /* Initially hide the image */
+            max-width: 100%;
+            max-height: 100%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999; /* Ensure image appears above everything else */
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Function to play audio
+        function playAudio() {
+            var audio = new Audio('sound.wav');
+            audio.play();
+        }
+
+        // Function to display image after a delay
+        function displayImage() {
+            var img = document.createElement('img');
+            img.src = 'img.png';
+            document.body.appendChild(img);
+        }
+
+        // Play audio after 2 seconds
+        setTimeout(playAudio, 2000);
+
+        // Display image after 5 seconds
+        setTimeout(displayImage, 5000);
+    </script>
+</body>
+</html>
