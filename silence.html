@@ -29,25 +29,21 @@
 </head>
 <body>
     <script>
-        // Function to play audio
-        function playAudio() {
-            var audio = new Audio('sound.wav');
-            audio.play();
-        }
+        var audio = new Audio('sound.wav');
+        var img = document.createElement('img');
+        img.src = 'img.png';
 
-        // Function to display image after a delay
-        function displayImage() {
-            var img = document.createElement('img');
-            img.src = 'img.png';
-            document.body.appendChild(img);
+        // Function to play audio and display image
+        function playAudioAndDisplayImage() {
+            audio.play(); // Attempt to play audio
+            document.body.appendChild(img); // Display image
             img.style.display = 'block'; // Show the image
         }
 
-        // Play audio after 2 seconds
-        setTimeout(playAudio, 2000);
-
-        // Display image after 5 seconds
-        setTimeout(displayImage, 5000);
+        // Wait for user interaction (e.g., click) to play audio and display image
+        document.addEventListener('click', function() {
+            playAudioAndDisplayImage();
+        });
     </script>
 </body>
 </html>
