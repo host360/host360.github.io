@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mekanik</title>
+    <style>
+        body, html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden; /* Hide horizontal overflow */
+        }
+
+        .black-box {
+            width: 100vw; /* Full viewport width */
+            height: 100vh; /* Full viewport height */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(90deg, #000, #444, #000);
+            background-size: 300% 100%;
+            animation: gradientAnimation 10s ease infinite;
+            color: #fff; /* White text */
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .text-gradient {
+            font-size: 3em; /* Adjust the font size as needed */
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff69b4, #8a2be2); /* Pink to purple gradient */
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: textGradientAnimation 10s ease infinite;
+            background-size: 200% 200%;
+            margin: 0; /* Remove default margin */
+        }
+
+        .scroll-down {
+            font-size: 1.5em; /* Smaller font size for "scroll down" text */
+            margin-top: 20px; /* Add space between the two text elements */
+        }
+
+        @keyframes textGradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .content {
+            width: 100vw;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-start;
+            padding: 20px;
+            background-color: #222; /* Background color for the content section */
+        }
+
+        .box {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 10px;
+            text-align: center;
+            width: 18%;
+        }
+
+        .box-abyzms {
+            background: linear-gradient(45deg, #ff69b4, #8a2be2); /* Gradient background for Abyzms box */
+            background-size: 200% 200%;
+            animation: gradientAnimation 10s ease infinite;
+            color: #fff; /* White text */
+        }
+
+        .box-perk {
+            background: linear-gradient(45deg, #ff0000, #800080); /* Red to purple gradient */
+            background-size: 200% 200%;
+            animation: gradientAnimation 10s ease infinite;
+            color: #fff; /* White text */
+        }
+
+        .box-shlorb {
+            background: linear-gradient(45deg, #ffa500, #8b0000); /* Orange to dark red gradient */
+            background-size: 200% 200%;
+            animation: gradientAnimation 10s ease infinite;
+            color: #fff; /* White text */
+        }
+
+        .box img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .box-title {
+            margin: 10px 0;
+            font-size: 1.2em;
+            color: #fff; /* White text color for the title */
+        }
+
+        .box-description {
+            color: #ddd; /* Light grey text color for the description */
+        }
+    </style>
+</head>
+<body>
+    <div class="black-box">
+        <div class="text-gradient">mekaniks.lol</div>
+        <div class="text-gradient scroll-down">scroll down</div>
+    </div>
+
+    <div class="content">
+        <div class="box box-abyzms">
+            <img src="abyzs.png" alt="Abyzms">
+            <div class="box-title">Abyzms</div>
+            <div class="box-description">
+                <p>Hello, I'm Abyzms, the founder of Mekanik alongside Perk. Our mission at Mekanik is to ensure your online safety by meticulously decompiling and analyzing malicious loggers. By doing so, we aim to protect you from potential threats and unauthorized data collection. We are dedicated to providing a safer digital environment for everyone. Thank you for your trust and support. Stay safe, love you all.</p>
+            </div>
+        </div>
+        <div class="box box-perk">
+            <img src="perk.png" alt="Perk">
+            <div class="box-title">Perk</div>
+            <div class="box-description">
+                <p>i like kids wait no i mean skids, well i like destroying them. if u come across me then heh... dont get on my 𝓯𝓻𝓮𝓪𝓴𝔂 side..</p>
+            </div>
+        </div>
+        <div class="box">
+            <img src="user106.png" alt="User106">
+            <div class="box-title">User106</div>
+            <div class="box-description">
+                <p>USER106 DESCRIPTION.</p>
+            </div>
+        </div>
+        <div class="box box-shlorb">
+            <img src="shlorb.png" alt="Shlorb">
+            <div class="box-title">Shlorb</div>
+            <div class="box-description">
+                <p>Hello, I am Shlorb, I am a member of mekanik, my goal was to make the World Wide Web a slightly better and safer place however, after witnessing the scummiest of people use the Web for malicious intent, I believe that the only true way to cleanse the internet of these scumbags, is to give them no mercy and whack them where it really counts, their anonymity. I have more pity to the victims than the scammers, and thus I will strike with a viscous fury, as the best type of justice, is the one they cannot hide from.</p>
+            </div>
+        </div>
+        <div class="box">
+            <img src="sh1d0w.png" alt="Sh1d0w">
+            <div class="box-title">Sh1d0w</div>
+            <div class="box-description">
+                <p>SH1D0W DESCRIPTION.</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
