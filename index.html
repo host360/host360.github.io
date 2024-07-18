@@ -27,6 +27,29 @@
             margin: 0 auto;
             pointer-events: auto;
         }
+        .menu-bar {
+            display: flex;
+            justify-content: center;
+            background-color: var(--text-color);
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .menu-bar button {
+            background-color: var(--bg-color);
+            color: var(--highlight-color);
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+            pointer-events: auto;
+        }
+        .menu-bar button:hover {
+            background-color: var(--red);
+        }
         .random-message-bar, .announcement-bar {
             text-align: center;
             padding: 10px;
@@ -110,6 +133,12 @@
 <body>
     <div id="custom-cursor"></div>
     <div class="container">
+        <div class="menu-bar">
+            <button onclick="window.location.href='team.html'">Team</button>
+            <button onclick="window.location.href='index.html'">Home</button>
+            <button onclick="window.location.href='announces.html'">Announcements</button>
+            <button onclick="window.location.href='tools.html'">Downloads</button>
+        </div>
         <div class="random-message-bar" id="random-message"></div>
         <div class="announcement-bar">Mekanik is currently NOT in legal trouble. 0 Members have been disbanded.</div>
         <h1>Mekanik</h1>
@@ -142,7 +171,6 @@
             <p class="contrast-text">If you would like to anonymously report things to authorities. You can here. https://forms.theiline.co.uk/crime-stoppers-international#:~:text=Crime%20Stoppers%20International%20is%20a,to%20our%20law%20enforcement%20partners</p>
         </div>
 
-        
         <!-- Mekanik's Most Wanted / Targeted -->
         <h1>Mekanik's Most Wanted / Targeted</h1>
         <div class="most-wanted paragraph-box">
@@ -157,12 +185,10 @@
             const x = e.clientX;
             const y = e.clientY;
             
-            // Move custom cursor
             const cursor = document.getElementById('custom-cursor');
             cursor.style.left = x + 'px';
             cursor.style.top = y + 'px';
             
-            // Update text gradient for all elements with .contrast-text
             document.querySelectorAll('.contrast-text').forEach(text => {
                 const rect = text.getBoundingClientRect();
                 const distX = x - (rect.left + rect.width / 2);
