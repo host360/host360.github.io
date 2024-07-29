@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EyeSee - Download Tools</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .container {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            padding: 20px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #007BFF;
+            margin-bottom: 20px;
+        }
+
+        .btn-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            background: #007BFF;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .btn:active {
+            background: #004494;
+            transform: scale(0.95);
+        }
+
+        .btn:focus {
+            outline: none;
+        }
+
+        .btn::after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: #fff;
+            transition: width 0.3s;
+            position: relative;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .btn:hover::after {
+            width: 100%;
+        }
+
+        .btn.disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .tooltip {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: left;
+            border-radius: 5px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; 
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 14px;
+        }
+
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #333 transparent transparent transparent;
+        }
+
+        .btn-container:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .description {
+            margin: 20px 0;
+            font-size: 18px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>EyeSee - Download Tools</h1>
+        <p class="description">Choose the tools you want to download and click the buttons below.</p>
+
+        <div class="btn-container">
+            <a href="files/EyeSeeYou.zip" class="btn" download="EyeSeeYou.zip" data-status="open">EyeSeeYou</a>
+            <div class="tooltip">
+                The EyeSeeYou is a powerful tool thats used to convert exe's (pyinstaller) to .pyc, then giving the option to convert it to source code.
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <a href="files/tool.zip" class="btn" download="Tool.zip" data-status="closed">N/A</a>
+            <div class="tooltip">
+                Tool not out.
+            </div>
+        </div>
+
+        <div class="btn-container">
+            <a href="files/tool.zip" class="btn" download="Tool.zip" data-status="closed">N/A</a>
+            <div class="tooltip">
+                Tool not out.
+            </div>
+        </div>
+    </div>
+    <script>
+        document.querySelectorAll('.btn').forEach(button => {
+            const status = button.getAttribute('data-status');
+            
+            if (status === 'closed') {
+                button.classList.add('disabled');
+                button.addEventListener('click', (event) => {
+                    event.preventDefault(); 
+                });
+            } else {
+                button.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const link = event.target.getAttribute('href');
+                    const fileName = event.target.getAttribute('download');
+                    const a = document.createElement('a');
+                    a.href = link;
+                    a.download = fileName;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
