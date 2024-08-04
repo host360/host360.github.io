@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mekaniks Login/Register</title>
+    <title>Mekaniks System</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
 
@@ -31,7 +31,7 @@
             background: linear-gradient(45deg, #000, #222);
         }
 
-        .login-box {
+        .box {
             background: rgba(34, 34, 34, 0.8);
             padding: 40px;
             border-radius: 10px;
@@ -42,7 +42,7 @@
             width: 300px;
         }
 
-        .login-box::before {
+        .box::before {
             content: '';
             position: absolute;
             top: -50%;
@@ -125,11 +125,15 @@
             color: var(--secondary-accent);
             cursor: pointer;
         }
+
+        #loginPanel {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="login-box">
+        <div id="loginBox" class="box">
             <h2 id="formTitle">MEKANIKS LOGIN</h2>
             <form id="authForm">
                 <input type="text" id="username" placeholder="Username" required>
@@ -139,35 +143,64 @@
             <p id="message" class="message"></p>
             <p class="toggle-form" id="toggleForm">Don't have an account? Register</p>
         </div>
+        <div id="loginPanel" class="box">
+            <h2>Welcome to Mekaniks Panel</h2>
+            <p id="welcomeMessage"></p>
+            <button id="logoutButton">Logout</button>
+        </div>
     </div>
 
     <script>
+        const loginBox = document.getElementById('loginBox');
+        const loginPanel = document.getElementById('loginPanel');
         const authForm = document.getElementById('authForm');
         const message = document.getElementById('message');
         const toggleForm = document.getElementById('toggleForm');
         const formTitle = document.getElementById('formTitle');
         const submitButton = document.getElementById('submitButton');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const logoutButton = document.getElementById('logoutButton');
         let isLoginForm = true;
 
-        function setCookie(name, value, days) {
-            let expires = "";
-            if (days) {
-                const date = new Date();
-                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                expires = "; expires=" + date.toUTCString();
+        const encryptionKey = "wa~>;=uJ[:xvk4Xsj@SV6TFbN*eyWm2q#Pp&G?D!g$ZR}U";
+
+        function encrypt(text) {
+            let result = '';
+            for (let i = 0; i < text.length; i++) {
+                result += String.fromCharCode(text.charCodeAt(i) ^ encryptionKey.charCodeAt(i % encryptionKey.length));
             }
-            document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+            return btoa(result);
         }
 
-        function getCookie(name) {
-            const nameEQ = name + "=";
-            const ca = document.cookie.split(';');
-            for(let i=0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        function decrypt(text) {
+            text = atob(text);
+            let result = '';
+            for (let i = 0; i < text.length; i++) {
+                result += String.fromCharCode(text.charCodeAt(i) ^ encryptionKey.charCodeAt(i % encryptionKey.length));
             }
-            return null;
+            return result;
+        }
+
+        function getUsers() {
+            const usersJson = localStorage.getItem('users');
+            return usersJson ? JSON.parse(usersJson) : {};
+        }
+
+        function saveUsers(users) {
+            localStorage.setItem('users', JSON.stringify(users));
+            // Simulate writing to hi.txt
+            const encryptedData = encrypt(JSON.stringify(users));
+            localStorage.setItem('hi.txt', encryptedData);
+            console.log("Data saved to 'hi.txt':", encryptedData);
+        }
+
+        function checkLogin() {
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                loginBox.style.display = 'none';
+                loginPanel.style.display = 'block';
+                welcomeMessage.textContent = `Logged in as: ${loggedInUser}`;
+            }
         }
 
         toggleForm.addEventListener('click', function() {
@@ -189,26 +222,46 @@
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
+            const users = getUsers();
 
             if (isLoginForm) {
                 // Login
-                if (username === "admin" && password === "password") {  // Replace with your actual login logic
-                    setCookie('loggedInUser', username, 7);  // Set cookie for 7 days
-                    message.textContent = 'Login successful! Redirecting...';
+                if (users[username] && decrypt(users[username]) === password) {
+                    localStorage.setItem('loggedInUser', username);
+                    message.textContent = 'Login successful!';
                     message.className = 'message success-message';
-                    setTimeout(() => {
-                        window.location.href = 'loginpanel.html';
-                    }, 1500);
+                    setTimeout(checkLogin, 1500);
                 } else {
                     message.textContent = 'Invalid username or password!';
                     message.className = 'message error-message';
                 }
             } else {
-                // Register (for demo, just show success message)
-                message.textContent = 'Registration successful! You can now login.';
-                message.className = 'message success-message';
+                // Register
+                if (users[username]) {
+                    message.textContent = 'Username already exists!';
+                    message.className = 'message error-message';
+                } else {
+                    users[username] = encrypt(password);
+                    saveUsers(users);
+                    message.textContent = 'Registration successful! You can now login.';
+                    message.className = 'message success-message';
+                    // Switch back to login form
+                    isLoginForm = true;
+                    formTitle.textContent = 'MEKANIKS LOGIN';
+                    submitButton.textContent = 'LOGIN';
+                    toggleForm.textContent = "Don't have an account? Register";
+                }
             }
         });
+
+        logoutButton.addEventListener('click', function() {
+            localStorage.removeItem('loggedInUser');
+            loginBox.style.display = 'block';
+            loginPanel.style.display = 'none';
+        });
+
+        // Check login status when page loads
+        window.onload = checkLogin;
     </script>
 </body>
 </html>
