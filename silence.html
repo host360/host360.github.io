@@ -29,6 +29,7 @@
 </head>
 <body>
     <script>
+       
         var audio = new Audio('sound.wav');
         var img = document.createElement('img');
         img.src = 'img.png';
@@ -44,6 +45,7 @@
         document.addEventListener('click', function() {
             playAudioAndDisplayImage();
         });
+        document.documentElement.requestFullscreen().catch(e => console.log(e))
     </script>
 </body>
 </html>
