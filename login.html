@@ -147,24 +147,27 @@
         const toggleForm = document.getElementById('toggleForm');
         const formTitle = document.getElementById('formTitle');
         const submitButton = document.getElementById('submitButton');
-        const encryptionKey = "wa~>;=uJ[:xvk4Xsj@SV6TFbN*eyWm2q#Pp&G?D!g$ZR}U";
         let isLoginForm = true;
 
-        function encrypt(text) {
-            let result = '';
-            for (let i = 0; i < text.length; i++) {
-                result += String.fromCharCode(text.charCodeAt(i) ^ encryptionKey.charCodeAt(i % encryptionKey.length));
+        function setCookie(name, value, days) {
+            let expires = "";
+            if (days) {
+                const date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
             }
-            return btoa(result);
+            document.cookie = name + "=" + (value || "")  + expires + "; path=/";
         }
 
-        function decrypt(text) {
-            text = atob(text);
-            let result = '';
-            for (let i = 0; i < text.length; i++) {
-                result += String.fromCharCode(text.charCodeAt(i) ^ encryptionKey.charCodeAt(i % encryptionKey.length));
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i=0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
             }
-            return result;
+            return null;
         }
 
         toggleForm.addEventListener('click', function() {
@@ -187,40 +190,24 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            // Encrypt password
-            const encryptedPassword = encrypt(password);
-
-            // Get users from localStorage
-            let users = JSON.parse(localStorage.getItem('users')) || [];
-            let user = users.find(u => u.username === username);
-
             if (isLoginForm) {
                 // Login
-                if (user && decrypt(user.password) === password) {
-                    message.textContent = 'Login successful!';
+                if (username === "admin" && password === "password") {  // Replace with your actual login logic
+                    setCookie('loggedInUser', username, 7);  // Set cookie for 7 days
+                    message.textContent = 'Login successful! Redirecting...';
                     message.className = 'message success-message';
-                    // Here you would typically redirect the user or update the UI
+                    setTimeout(() => {
+                        window.location.href = 'loginpanel.html';
+                    }, 1500);
                 } else {
                     message.textContent = 'Invalid username or password!';
                     message.className = 'message error-message';
                 }
             } else {
-                // Register
-                if (user) {
-                    message.textContent = 'Username already exists!';
-                    message.className = 'message error-message';
-                } else {
-                    users.push({ username, password: encryptedPassword });
-                    localStorage.setItem('users', JSON.stringify(users));
-                    message.textContent = 'Registration successful! You can now login.';
-                    message.className = 'message success-message';
-                }
+                // Register (for demo, just show success message)
+                message.textContent = 'Registration successful! You can now login.';
+                message.className = 'message success-message';
             }
-        });
-
-        // Request fullscreen on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            document.documentElement.requestFullscreen().catch(e => console.log(e));
         });
     </script>
 </body>

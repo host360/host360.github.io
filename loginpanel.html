@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mekaniks Login Panel</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #e0e0e0;
+            --accent-color: #ff00ff;
+            --secondary-accent: #00ffff;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background: linear-gradient(45deg, #000, #222);
+        }
+
+        .panel {
+            background: rgba(34, 34, 34, 0.8);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: none;
+            background: var(--accent-color);
+            color: var(--bg-color);
+            cursor: pointer;
+            border-radius: 5px;
+            font-family: 'Roboto Mono', monospace;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: var(--secondary-accent);
+            box-shadow: 0 0 15px var(--secondary-accent);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="panel">
+            <h1>Welcome to Mekaniks Panel</h1>
+            <p>You are now logged in.</p>
+            <p id="username-display"></p>
+            <button id="logout-btn">Logout</button>
+        </div>
+    </div>
+
+    <script>
+        function getCookie(name) {
+            const nameEQ = name + "=";
+            const ca = document.cookie.split(';');
+            for(let i=0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+            }
+            return null;
+        }
+
+        function deleteCookie(name) {
+            document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        }
+
+        // Check if user is logged in
+        function checkLogin() {
+            const loggedInUser = getCookie('loggedInUser');
+            if (!loggedInUser) {
+                // If not logged in, redirect to login page
+                window.location.href = 'login.html';
+            } else {
+                // Display username
+                document.getElementById('username-display').textContent = `Logged in as: ${loggedInUser}`;
+            }
+        }
+
+        // Logout function
+        function logout() {
+            deleteCookie('loggedInUser');
+            window.location.href = 'login.html';
+        }
+
+        // Add event listener to logout button
+        document.getElementById('logout-btn').addEventListener('click', logout);
+
+        // Check login status when page loads
+        window.onload = checkLogin;
+    </script>
+</body>
+</html>
