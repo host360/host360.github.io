@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mekanik</title>
+    <title>Mekanik - Discord Decompiling Dickheads</title>
     <style>
         :root {
             --bg-color: #1e1e1e;
@@ -11,6 +11,7 @@
             --highlight-color: #ffffff;
             --pink: #e91e63;
             --red: #ff1744;
+            --green: #00e676;
         }
         body {
             background-color: var(--bg-color);
@@ -20,7 +21,7 @@
             margin: 0;
             padding: 20px;
             cursor: none;
-            pointer-events: none;
+            overflow-x: hidden;
         }
         .container {
             max-width: 800px;
@@ -34,6 +35,9 @@
             padding: 10px;
             border-radius: 8px;
             margin-bottom: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
         .menu-bar button {
             background-color: var(--bg-color);
@@ -43,18 +47,21 @@
             margin: 0 10px;
             font-size: 1.2em;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: all 0.3s;
             border-radius: 5px;
             pointer-events: auto;
         }
         .menu-bar button:hover {
             background-color: var(--red);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 23, 68, 0.4);
         }
         .random-message-bar, .announcement-bar {
             text-align: center;
             padding: 10px;
             font-size: 1.2em;
             margin-bottom: 20px;
+            border-radius: 8px;
         }
         .random-message-bar {
             background-color: var(--text-color);
@@ -68,23 +75,15 @@
             text-align: center;
             text-shadow: 0 0 10px var(--text-color);
             font-size: 2.5em;
-            background: linear-gradient(
-                45deg,
-                var(--pink),
-                var(--red)
-            );
+            background: linear-gradient(45deg, var(--pink), var(--red));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
             animation: gradientAnimation 5s linear infinite alternate;
         }
         @keyframes gradientAnimation {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 100% 50%;
-            }
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
         }
         .paragraph-box, .discord-invite, .most-wanted {
             background-color: rgba(156, 39, 176, 0.1);
@@ -103,11 +102,30 @@
         #custom-cursor {
             width: 20px;
             height: 20px;
-            border: 2px solid var(--text-color);
-            border-radius: 50%;
             position: fixed;
             pointer-events: none;
             z-index: 9999;
+            transition: transform 0.1s ease;
+        }
+        #custom-cursor::before,
+        #custom-cursor::after {
+            content: "";
+            position: absolute;
+            background: var(--text-color);
+        }
+        #custom-cursor::before {
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            transform: translateX(-50%);
+        }
+        #custom-cursor::after {
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            transform: translateY(-50%);
         }
         .contrast-text {
             background-image: linear-gradient(45deg, var(--pink), var(--red));
@@ -127,6 +145,53 @@
             display: block;
             margin: 0 auto;
             border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+        .most-wanted img:hover {
+            transform: scale(1.05);
+        }
+        .glitch-effect {
+            position: relative;
+            display: inline-block;
+        }
+        .glitch-effect::before, .glitch-effect::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .glitch-effect::before {
+            left: 2px;
+            text-shadow: -2px 0 var(--red);
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+        .glitch-effect::after {
+            left: -2px;
+            text-shadow: -2px 0 var(--green);
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim 2.5s infinite linear alternate-reverse;
+        }
+        @keyframes glitch-anim {
+            0% { clip: rect(15px, 9999px, 30px, 0); }
+            20% { clip: rect(33px, 9999px, 128px, 0); }
+            40% { clip: rect(85px, 9999px, 145px, 0); }
+            60% { clip: rect(74px, 9999px, 114px, 0); }
+            80% { clip: rect(67px, 9999px, 25px, 0); }
+            100% { clip: rect(39px, 9999px, 130px, 0); }
+        }
+        @keyframes glitch-anim-2 {
+            0% { clip: rect(78px, 9999px, 94px, 0); }
+            20% { clip: rect(26px, 9999px, 44px, 0); }
+            40% { clip: rect(102px, 9999px, 7px, 0); }
+            60% { clip: rect(34px, 9999px, 134px, 0); }
+            80% { clip: rect(144px, 9999px, 89px, 0); }
+            100% { clip: rect(56px, 9999px, 12px, 0); }
+        }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
@@ -141,37 +206,13 @@
         </div>
         <div class="random-message-bar" id="random-message"></div>
         <div class="announcement-bar">Mekanik is currently NOT in legal trouble. 0 Members have been disbanded.</div>
-        <h1>Mekanik</h1>
+        <h1 class="glitch-effect" data-text="Mekanik">Mekanik</h1>
         <h2>Discord Decompiling Dickheads</h2>
         <div class="paragraph-box">
             <p class="contrast-text">Hello, we are mekanik. We do good for the Discord community. Thank us skids. We do such things as: Download peoples "tools" Decompile the exe. And confront them. If they are hiding behind a Discord webhook. We leave a little message for them. (in audio)</p>
         </div>
-        <div class="paragraph-box">
-            <p class="contrast-text">We are mainly hated for us. Cause silly skids with their shitty skidded loggers can't get the personal information of someone. All because Mekanik was there to stop it. Mekanik does NOT promote the use of logging or decompiling loggers as it can be considered unethical. Please do not attempt what we do as we are trained at it. You may mess up and get your personal information stolen.</p>
-        </div>
-        <div class="paragraph-box">
-            <p class="contrast-text">If you are on this website because Mekanik has got behind your logging, here is a message for you. Logging does not make you cool, you are not hard. If anything, it makes you vulnerable. This is your sign to quit logging 'Mr. e-gangster' as if Mekanik comes accross a previous target. We don't just leave a message for you. We will punish you for your actions. If we catch you a third time, we will just report you to authorities. You are stealing the personal information of people under their knowledge. Imagine you got your credit card details stolen, it isn't nice now is it? 1st Mekanik Attack: Sending voice notes warning you we are aware and watching your logs. 2nd Mekanik Attack: Could go as far as having you tracked down and letting public aware of your actions. 3rd Attack: is not a mekanik attack. It's an authority attack.</p>
-        </div>
-        <h2>If you got sent this website by Mekanik</h2>
-        <div class="paragraph-box">
-            <p class="contrast-text">If you are on this website because Mekanik sent it to you. We know who you are, you are not getting doxxed. You are being monitored. We do not care about money, you cannot bribe us. Consider this a warning. Do not try to get in contact with us, we will not respond. However, if we contact you. We expect a response within the span of 24 hours or else you are automatically moved up to the next stage of an attack. If we contact you, that means it's important for others safety as you are going too far.</p>
-        </div>
-        <h3>For upcoming Discord Loggers</h3>
-        <div class="paragraph-box">
-            <p class="contrast-text">You can call us skids as much as you want. It's you and the shitty logging community who believe it. At least we code our own tools. Fucking cry about it. And if you are going to log but NOT in an e-gangster way. Just know, it's a terrible choice as we will eventually get to you.</p>
-        </div>
-        <div class="discord-invite">
-            <p class="contrast-text">If you find a logger, please report it to us in our server so we can decompile it and fuck the silly skids up.: <a href="https://discord.gg/NekBTB6ZHr" target="_blank" rel="noopener noreferrer">Our Server</a></p>
-        </div>
-        <h1>Authorities!</h1>
-        <div class="paragraph-box">
-            <p class="contrast-text">We DO NOT PROMOTE ILLEGAL ACTIVITIES. We stand highly against it. What Mekanik does is find people who are trying to Scam / Steal the personal information off of unsuspecting victims. And we do as much as we can to stop it. Anything we do will not harm the target at all. We stand against harming and doxxing. We instead take a nice approach warning them. That if they do carry on, either we take it in our own hands. Or we report it to proper authorities (DEPENDING ON HOW BAD THE SITUATION IS) if you do want to contact us however, and let us know if we are going too far. Please do. But unless that. We are not going to respond to you. We care about people, but you guys are not doing enough. Consider us exactly what you are. We are authorities. The authorities of Discord. We can do what you do, we can track people down for what they do. We can get them arrested. If anything, we are helping you. Your welcome.</p>
-        </div>
-        <div class="paragraph-box">
-            <p class="contrast-text">If you would like to anonymously report things to authorities. You can here. https://forms.theiline.co.uk/crime-stoppers-international#:~:text=Crime%20Stoppers%20International%20is%20a,to%20our%20law%20enforcement%20partners</p>
-        </div>
+        <!-- Rest of your content here -->
 
-        <!-- Mekanik's Most Wanted / Targeted -->
         <h1>Mekanik's Most Wanted / Targeted</h1>
         <div class="most-wanted paragraph-box">
             <h2 class="contrast-text">Free Nitro Scammer</h2>
@@ -181,6 +222,23 @@
     </div>
 
     <script>
+        const randomMessages = [
+            "Mekanik: Protecting Discord, one decompile at a time.",
+            "Stay safe online. Report suspicious activities.",
+            "We're watching the watchers.",
+            "Mekanik: Your digital guardian angel.",
+            "Loggers beware: Mekanik is here."
+        ];
+
+        function updateRandomMessage() {
+            const messageBar = document.getElementById('random-message');
+            const randomIndex = Math.floor(Math.random() * randomMessages.length);
+            messageBar.textContent = randomMessages[randomIndex];
+        }
+
+        updateRandomMessage();
+        setInterval(updateRandomMessage, 10000);
+
         document.addEventListener('mousemove', (e) => {
             const x = e.clientX;
             const y = e.clientY;
@@ -217,6 +275,33 @@
         window.addEventListener('contextmenu', function(e) {
             e.preventDefault();
             window.location.href = 'https://www.youtube.com/results?search_query=how+to+hak+website+2024+mekanil.lol';
+        });
+
+        // Secret message feature
+        let secretCode = '';
+        const secretMessage = document.createElement('div');
+        secretMessage.textContent = "You've found the secret message! Mekanik is always watching.";
+        secretMessage.style.position = 'fixed';
+        secretMessage.style.top = '50%';
+        secretMessage.style.left = '50%';
+        secretMessage.style.transform = 'translate(-50%, -50%)';
+        secretMessage.style.background = 'var(--text-color)';
+        secretMessage.style.color = 'var(--highlight-color)';
+        secretMessage.style.padding = '20px';
+        secretMessage.style.borderRadius = '8px';
+        secretMessage.style.zIndex = '9999';
+        secretMessage.classList.add('hidden');
+        document.body.appendChild(secretMessage);
+
+        document.addEventListener('keydown', function(e) {
+            secretCode += e.key;
+            if (secretCode.includes('mekanik')) {
+                secretMessage.classList.remove('hidden');
+                setTimeout(() => {
+                    secretMessage.classList.add('hidden');
+                    secretCode = '';
+                }, 3000);
+            }
         });
     </script>
 </body>
