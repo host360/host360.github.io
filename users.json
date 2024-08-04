@@ -1,2 +1,5 @@
-{}
-test
+{
+    "username1": "encryptedPassword1",
+    "username2": "encryptedPassword2"
+  }
+  

@@ -193,10 +193,15 @@
         const exportedData = document.getElementById('exportedData');
         const loader = document.getElementById('loader');
         let isLoginForm = true;
+        let loggedInUser = null;
 
         const encryptionKey = "YOUR_ENCRYPTION_KEY"; // Replace with your actual key
 
         function encrypt(text) {
+            if (!text) {
+                console.error('Attempt to encrypt empty text');
+                return null;
+            }
             let result = '';
             for (let i = 0; i < text.length; i++) {
                 result += String.fromCharCode(text.charCodeAt(i) ^ encryptionKey.charCodeAt(i % encryptionKey.length));
@@ -221,8 +226,13 @@
         async function retryFetch(url, options, maxRetries = 3) {
             for (let i = 0; i < maxRetries; i++) {
                 try {
-                    return await fetch(url, options);
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response;
                 } catch (error) {
+                    console.error(`Attempt ${i + 1} failed: ${error.message}`);
                     if (i === maxRetries - 1) throw error;
                     await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, i)));
                 }
@@ -318,16 +328,20 @@
 
         async function saveUsers(users) {
             try {
-                await updateFileContent(users);
-                console.log("Data saved to GitHub");
+                const result = await updateFileContent(users);
+                if (result) {
+                    console.log("Data saved to GitHub");
+                } else {
+                    throw new Error("Failed to save data");
+                }
             } catch (error) {
                 console.error('Error saving users:', error);
                 showMessage('Error saving user data. Please try again.', 'error');
+                throw error;
             }
         }
 
         function checkLogin() {
-            const loggedInUser = localStorage.getItem('loggedInUser');
             if (loggedInUser) {
                 loginBox.style.display = 'none';
                 loginPanel.style.display = 'block';
@@ -388,7 +402,7 @@
                 if (isLoginForm) {
                     // Login
                     if (users[username] && decrypt(users[username]) === password) {
-                        localStorage.setItem('loggedInUser', username);
+                        loggedInUser = username;
                         showMessage('Login successful!', 'success');
                         setTimeout(checkLogin, 1500);
                     } else {
@@ -400,13 +414,17 @@
                         showMessage('Username already exists!', 'error');
                     } else {
                         users[username] = encrypt(password);
-                        await saveUsers(users);
-                        showMessage('Registration successful! You can now login.', 'success');
-                        // Switch back to login form
-                        isLoginForm = true;
-                        formTitle.textContent = 'MEKANIKS LOGIN';
-                        submitButton.textContent = 'LOGIN';
-                        toggleForm.textContent = "Don't have an account? Register";
+                        try {
+                            await saveUsers(users);
+                            showMessage('Registration successful! You can now login.', 'success');
+                            // Switch back to login form
+                            isLoginForm = true;
+                            formTitle.textContent = 'MEKANIKS LOGIN';
+                            submitButton.textContent = 'LOGIN';
+                            toggleForm.textContent = "Don't have an account? Register";
+                        } catch (error) {
+                            showMessage('Registration failed. Please try again.', 'error');
+                        }
                     }
                 }
             } catch (error) {
@@ -418,7 +436,7 @@
         });
 
         logoutButton.addEventListener('click', function() {
-            localStorage.removeItem('loggedInUser');
+            loggedInUser = null;
             loginBox.style.display = 'block';
             loginPanel.style.display = 'none';
         });
@@ -443,19 +461,4 @@
                 showLoader();
                 try {
                     const users = JSON.parse(data);
-                    await saveUsers(users);
-                    exportedData.value = data;
-                    showMessage('Data imported successfully!', 'success');
-                } catch (error) {
-                    console.error('Import error:', error);
-                    showMessage('Error importing data. Please check the format.', 'error');
-                } finally {
-                    hideLoader();
-                }
-            }
-        });
-
-        window.addEventListener('load', checkLogin);
-    </script>
-</body>
-</html>
+                    await saveUsers(
