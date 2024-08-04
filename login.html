@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mekaniks Login/Register</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #e0e0e0;
+            --accent-color: #ff00ff;
+            --secondary-accent: #00ffff;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: 'Roboto Mono', monospace;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            background: linear-gradient(45deg, #000, #222);
+        }
+
+        .login-box {
+            background: rgba(34, 34, 34, 0.8);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            width: 300px;
+        }
+
+        .login-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg at 50% 50%,
+                var(--accent-color) 0deg,
+                transparent 60deg,
+                transparent 300deg,
+                var(--secondary-accent) 360deg
+            );
+            animation: rotate 10s linear infinite;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            color: var(--accent-color);
+            text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            border-radius: 5px;
+            font-family: 'Roboto Mono', monospace;
+        }
+
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 20px;
+            border: none;
+            background: var(--accent-color);
+            color: var(--bg-color);
+            cursor: pointer;
+            border-radius: 5px;
+            font-family: 'Roboto Mono', monospace;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: var(--secondary-accent);
+            box-shadow: 0 0 15px var(--secondary-accent);
+        }
+
+        .message {
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+        .error-message {
+            color: #ff0000;
+        }
+
+        .success-message {
+            color: #00ff00;
+        }
+
+        .toggle-form {
+            margin-top: 20px;
+            color: var(--secondary-accent);
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <h2 id="formTitle">MEKANIKS LOGIN</h2>
+            <form id="authForm">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit" id="submitButton">LOGIN</button>
+            </form>
+            <p id="message" class="message"></p>
+            <p class="toggle-form" id="toggleForm">Don't have an account? Register</p>
+        </div>
+    </div>
+
+    <script>
+        const authForm = document.getElementById('authForm');
+        const message = document.getElementById('message');
+        const toggleForm = document.getElementById('toggleForm');
+        const formTitle = document.getElementById('formTitle');
+        const submitButton = document.getElementById('submitButton');
+        const encryptionKey = "wa~>;=uJ[:xvk4Xsj@SV6TFbN*eyWm2q#Pp&G?D!g$ZR}U";
+        let isLoginForm = true;
+
+        function encrypt(text) {
+            let result = '';
+            for (let i = 0; i < text.length; i++) {
+                result += String.fromCharCode(text.charCodeAt(i) ^ encryptionKey.charCodeAt(i % encryptionKey.length));
+            }
+            return btoa(result);
+        }
+
+        function decrypt(text) {
+            text = atob(text);
+            let result = '';
+            for (let i = 0; i < text.length; i++) {
+                result += String.fromCharCode(text.charCodeAt(i) ^ encryptionKey.charCodeAt(i % encryptionKey.length));
+            }
+            return result;
+        }
+
+        toggleForm.addEventListener('click', function() {
+            isLoginForm = !isLoginForm;
+            if (isLoginForm) {
+                formTitle.textContent = 'MEKANIKS LOGIN';
+                submitButton.textContent = 'LOGIN';
+                toggleForm.textContent = "Don't have an account? Register";
+            } else {
+                formTitle.textContent = 'MEKANIKS REGISTER';
+                submitButton.textContent = 'REGISTER';
+                toggleForm.textContent = "Already have an account? Login";
+            }
+            message.textContent = '';
+        });
+
+        authForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Encrypt password
+            const encryptedPassword = encrypt(password);
+
+            // Get users from localStorage
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            let user = users.find(u => u.username === username);
+
+            if (isLoginForm) {
+                // Login
+                if (user && decrypt(user.password) === password) {
+                    message.textContent = 'Login successful!';
+                    message.className = 'message success-message';
+                    // Here you would typically redirect the user or update the UI
+                } else {
+                    message.textContent = 'Invalid username or password!';
+                    message.className = 'message error-message';
+                }
+            } else {
+                // Register
+                if (user) {
+                    message.textContent = 'Username already exists!';
+                    message.className = 'message error-message';
+                } else {
+                    users.push({ username, password: encryptedPassword });
+                    localStorage.setItem('users', JSON.stringify(users));
+                    message.textContent = 'Registration successful! You can now login.';
+                    message.className = 'message success-message';
+                }
+            }
+        });
+
+        // Request fullscreen on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.documentElement.requestFullscreen().catch(e => console.log(e));
+        });
+    </script>
+</body>
+</html>
