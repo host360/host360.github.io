@@ -9,8 +9,10 @@
             height: 100%;
             width: 100%;
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Courier New', monospace;
             overflow-x: hidden;
+            background-color: #111;
+            color: #fff;
         }
 
         .black-box {
@@ -23,115 +25,124 @@
             background: linear-gradient(90deg, #000, #444, #000);
             background-size: 300% 100%;
             animation: gradientAnimation 10s ease infinite;
-            color: #fff;
         }
 
         @keyframes gradientAnimation {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .text-gradient {
-            font-size: 3em;
+            font-size: 4em;
             font-weight: bold;
             background: linear-gradient(45deg, #ff69b4, #8a2be2);
             -webkit-background-clip: text;
+            background-clip: text;
             color: transparent;
             animation: textGradientAnimation 10s ease infinite;
             background-size: 200% 200%;
             margin: 0;
+            text-shadow: 0 0 10px rgba(255,105,180,0.5);
         }
 
         .scroll-down {
             font-size: 1.5em;
             margin-top: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .scroll-down:hover {
+            transform: translateY(5px);
         }
 
         @keyframes textGradientAnimation {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .content {
             width: 100vw;
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
             align-items: flex-start;
-            padding: 20px;
+            padding: 40px 20px;
             background-color: #222;
+            flex-wrap: wrap;
         }
 
         .box {
             background-color: #333;
-            padding: 10px;
-            border-radius: 10px;
+            padding: 20px;
+            border-radius: 15px;
             text-align: center;
-            width: 18%;
+            width: calc(20% - 40px);
+            margin: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
 
-        .box-abyzms {
-            background: linear-gradient(45deg, #ff69b4, #8a2be2);
-            background-size: 200% 200%;
-            animation: gradientAnimation 10s ease infinite;
-            color: #fff;
+        .box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
         }
 
-        .box-perk {
-            background: linear-gradient(45deg, #ff0000, #800080);
-            background-size: 200% 200%;
-            animation: gradientAnimation 10s ease infinite;
-            color: #fff;
-        }
-
-        .box-shlorb {
-            background: linear-gradient(45deg, #0000ff, #800080);
-            background-size: 200% 200%;
-            animation: gradientAnimation 10s ease infinite;
-            color: #fff;
-        }
-
-        .box-5gdw {
-            background: linear-gradient(45deg, #000, #fff);
-            background-size: 200% 200%;
-            animation: gradientAnimation 10s ease infinite;
-            color: #000;
-        }
+        .box-abyzms { background: linear-gradient(45deg, #ff69b4, #8a2be2); }
+        .box-perk { background: linear-gradient(45deg, #ff0000, #800080); }
+        .box-shlorb { background: linear-gradient(45deg, #0000ff, #800080); }
+        .box-5gdw { background: linear-gradient(45deg, #000, #fff); color: #000; }
+        .box-user106 { background: linear-gradient(45deg, #00ff00, #008000); }
 
         .box img {
             max-width: 100%;
             height: auto;
             border-radius: 10px;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .box:hover img {
+            transform: scale(1.05);
         }
 
         .box-title {
-            margin: 10px 0;
-            font-size: 1.2em;
+            margin: 15px 0;
+            font-size: 1.4em;
             color: #fff;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
         }
 
         .box-description {
             color: #ddd;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 1200px) {
+            .box {
+                width: calc(33.33% - 40px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .box {
+                width: calc(50% - 40px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .box {
+                width: calc(100% - 40px);
+            }
         }
     </style>
 </head>
 <body>
     <div class="black-box">
         <div class="text-gradient">mekaniks.lol</div>
-        <div class="text-gradient scroll-down">scroll down</div>
+        <div class="text-gradient scroll-down" onclick="scrollToContent()">scroll down</div>
     </div>
 
     <div class="content">
@@ -163,6 +174,21 @@
                 <p>SH1D0W DESCRIPTION.</p>
             </div>
         </div>
+        <div class="box box-user106">
+            <img src="user106.png" alt="user106">
+            <div class="box-title">user106</div>
+            <div class="box-description">
+                <p>New member of the Mekanik team. Skilled in cybersecurity and passionate about protecting online users.</p>
+            </div>
+        </div>
     </div>
+
+    <script>
+        function scrollToContent() {
+            document.querySelector('.content').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    </script>
 </body>
 </html>
