@@ -129,6 +129,11 @@
         #loginPanel {
             display: none;
         }
+
+        #hiTxtContent {
+            margin-top: 20px;
+            word-wrap: break-word;
+        }
     </style>
 </head>
 <body>
@@ -142,6 +147,7 @@
             </form>
             <p id="message" class="message"></p>
             <p class="toggle-form" id="toggleForm">Don't have an account? Register</p>
+            <div id="hiTxtContent"></div>
         </div>
         <div id="loginPanel" class="box">
             <h2>Welcome to Mekaniks Panel</h2>
@@ -160,6 +166,7 @@
         const submitButton = document.getElementById('submitButton');
         const welcomeMessage = document.getElementById('welcomeMessage');
         const logoutButton = document.getElementById('logoutButton');
+        const hiTxtContent = document.getElementById('hiTxtContent');
         let isLoginForm = true;
 
         const encryptionKey = "wa~>;=uJ[:xvk4Xsj@SV6TFbN*eyWm2q#Pp&G?D!g$ZR}U";
@@ -182,15 +189,14 @@
         }
 
         function getUsers() {
-            const usersJson = localStorage.getItem('users');
-            return usersJson ? JSON.parse(usersJson) : {};
+            const usersJson = localStorage.getItem('hi.txt');
+            return usersJson ? JSON.parse(decrypt(usersJson)) : {};
         }
 
         function saveUsers(users) {
-            localStorage.setItem('users', JSON.stringify(users));
-            // Simulate writing to hi.txt
             const encryptedData = encrypt(JSON.stringify(users));
             localStorage.setItem('hi.txt', encryptedData);
+            hiTxtContent.textContent = `hi.txt content: ${encryptedData}`;
             console.log("Data saved to 'hi.txt':", encryptedData);
         }
 
@@ -222,11 +228,11 @@
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            const users = getUsers();
+            let users = getUsers();
 
             if (isLoginForm) {
                 // Login
-                if (users[username] && decrypt(users[username]) === password) {
+                if (users[username] && users[username] === encrypt(password)) {
                     localStorage.setItem('loggedInUser', username);
                     message.textContent = 'Login successful!';
                     message.className = 'message success-message';
@@ -261,7 +267,13 @@
         });
 
         // Check login status when page loads
-        window.onload = checkLogin;
+        window.onload = function() {
+            checkLogin();
+            const hiTxtData = localStorage.getItem('hi.txt');
+            if (hiTxtData) {
+                hiTxtContent.textContent = `hi.txt content: ${hiTxtData}`;
+            }
+        };
     </script>
 </body>
 </html>
