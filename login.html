@@ -5,22 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mekaniks System</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
 
         :root {
-            --bg-color: #0a0a0a;
+            --bg-color: #1a1a2e;
             --text-color: #e0e0e0;
-            --accent-color: #ff00ff;
-            --secondary-accent: #00ffff;
+            --accent-color: #16213e;
+            --secondary-accent: #0f3460;
+            --highlight-color: #e94560;
         }
 
         body, html {
             height: 100%;
             margin: 0;
-            font-family: 'Roboto Mono', monospace;
+            font-family: 'Roboto', sans-serif;
             background-color: var(--bg-color);
             color: var(--text-color);
-            overflow: hidden;
         }
 
         .container {
@@ -28,102 +28,92 @@
             justify-content: center;
             align-items: center;
             height: 100%;
-            background: linear-gradient(45deg, #000, #222);
+            background: linear-gradient(45deg, var(--bg-color), var(--accent-color));
         }
 
         .box {
-            background: rgba(34, 34, 34, 0.8);
+            background: rgba(255, 255, 255, 0.1);
             padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
-            text-align: center;
-            position: relative;
-            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
             width: 300px;
+            transition: all 0.3s ease;
         }
 
-        .box::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(
-                from 0deg at 50% 50%,
-                var(--accent-color) 0deg,
-                transparent 60deg,
-                transparent 300deg,
-                var(--secondary-accent) 360deg
-            );
-            animation: rotate 10s linear infinite;
-            opacity: 0.1;
-            z-index: -1;
-        }
-
-        @keyframes rotate {
-            100% { transform: rotate(360deg); }
+        .box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
         h2 {
             margin-bottom: 30px;
             font-size: 2.5em;
-            color: var(--accent-color);
-            text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+            color: var(--highlight-color);
+            text-align: center;
         }
 
         input, textarea {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             margin: 10px 0;
             border: none;
             background: rgba(255, 255, 255, 0.1);
             color: var(--text-color);
             border-radius: 5px;
-            font-family: 'Roboto Mono', monospace;
+            font-family: 'Roboto', sans-serif;
+            transition: all 0.3s ease;
         }
 
         input:focus, textarea:focus {
             outline: none;
-            box-shadow: 0 0 10px var(--accent-color);
+            box-shadow: 0 0 10px var(--highlight-color);
         }
 
         button {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             margin-top: 20px;
             border: none;
-            background: var(--accent-color);
-            color: var(--bg-color);
+            background: var(--highlight-color);
+            color: var(--text-color);
             cursor: pointer;
             border-radius: 5px;
-            font-family: 'Roboto Mono', monospace;
+            font-family: 'Roboto', sans-serif;
             font-weight: bold;
             transition: all 0.3s ease;
         }
 
         button:hover {
             background: var(--secondary-accent);
-            box-shadow: 0 0 15px var(--secondary-accent);
+            transform: translateY(-2px);
         }
 
         .message {
-            margin-top: 10px;
+            margin-top: 15px;
             font-size: 0.9em;
+            text-align: center;
+            transition: all 0.3s ease;
         }
 
         .error-message {
-            color: #ff0000;
+            color: #ff6b6b;
         }
 
         .success-message {
-            color: #00ff00;
+            color: #51cf66;
         }
 
         .toggle-form {
             margin-top: 20px;
-            color: var(--secondary-accent);
+            color: var(--highlight-color);
             cursor: pointer;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-form:hover {
+            color: var(--secondary-accent);
         }
 
         #loginPanel {
@@ -132,7 +122,6 @@
 
         #dataIO {
             margin-top: 20px;
-            text-align: left;
         }
 
         #exportedData {
@@ -140,6 +129,22 @@
             height: 100px;
             margin-top: 10px;
             resize: vertical;
+        }
+
+        .loader {
+            border: 4px solid var(--text-color);
+            border-top: 4px solid var(--highlight-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -153,6 +158,7 @@
                 <button type="submit" id="submitButton">LOGIN</button>
             </form>
             <p id="message" class="message"></p>
+            <div class="loader" id="loader"></div>
             <p class="toggle-form" id="toggleForm">Don't have an account? Register</p>
             <div id="dataIO">
                 <button id="exportButton">Export Data</button>
@@ -185,6 +191,7 @@
         const exportButton = document.getElementById('exportButton');
         const importButton = document.getElementById('importButton');
         const exportedData = document.getElementById('exportedData');
+        const loader = document.getElementById('loader');
         let isLoginForm = true;
 
         const encryptionKey = "wa~>;=uJ[:xvk4Xsj@SV6TFbN*eyWm2q#Pp&G?D!g$ZR}U";
@@ -215,7 +222,6 @@
                 });
 
                 if (response.status === 404) {
-                    // File doesn't exist, create it
                     await createFile();
                     return {};
                 }
@@ -225,7 +231,7 @@
                 return content ? JSON.parse(decrypt(content)) : {};
             } catch (error) {
                 console.error('Error getting file content:', error);
-                return {};
+                throw error;
             }
         }
 
@@ -260,7 +266,6 @@
                 });
                 currentFile = await response.json();
             } catch (error) {
-                // File doesn't exist, create it
                 await createFile();
                 return true;
             }
@@ -285,6 +290,7 @@
                 return await getFileContent();
             } catch (error) {
                 console.error('Error getting users:', error);
+                showMessage('Error retrieving user data. Please try again.', 'error');
                 return {};
             }
         }
@@ -295,6 +301,7 @@
                 console.log("Data saved to GitHub");
             } catch (error) {
                 console.error('Error saving users:', error);
+                showMessage('Error saving user data. Please try again.', 'error');
             }
         }
 
@@ -305,6 +312,25 @@
                 loginPanel.style.display = 'block';
                 welcomeMessage.textContent = `Logged in as: ${loggedInUser}`;
             }
+        }
+
+        function showMessage(text, type) {
+            message.textContent = text;
+            message.className = `message ${type}-message`;
+            setTimeout(() => {
+                message.textContent = '';
+                message.className = 'message';
+            }, 3000);
+        }
+
+        function showLoader() {
+            loader.style.display = 'block';
+            submitButton.disabled = true;
+        }
+
+        function hideLoader() {
+            loader.style.display = 'none';
+            submitButton.disabled = false;
         }
 
         toggleForm.addEventListener('click', function() {
@@ -323,38 +349,43 @@
 
         authForm.addEventListener('submit', async function(e) {
             e.preventDefault();
+            showLoader();
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            let users = await getUsers();
+            
+            try {
+                let users = await getUsers();
 
-            if (isLoginForm) {
-                // Login
-                if (users[username] && decrypt(users[username]) === password) {
-                    localStorage.setItem('loggedInUser', username);
-                    message.textContent = 'Login successful!';
-                    message.className = 'message success-message';
-                    setTimeout(checkLogin, 1500);
+                if (isLoginForm) {
+                    // Login
+                    if (users[username] && decrypt(users[username]) === password) {
+                        localStorage.setItem('loggedInUser', username);
+                        showMessage('Login successful!', 'success');
+                        setTimeout(checkLogin, 1500);
+                    } else {
+                        showMessage('Invalid username or password!', 'error');
+                    }
                 } else {
-                    message.textContent = 'Invalid username or password!';
-                    message.className = 'message error-message';
+                    // Register
+                    if (users[username]) {
+                        showMessage('Username already exists!', 'error');
+                    } else {
+                        users[username] = encrypt(password);
+                        await saveUsers(users);
+                        showMessage('Registration successful! You can now login.', 'success');
+                        // Switch back to login form
+                        isLoginForm = true;
+                        formTitle.textContent = 'MEKANIKS LOGIN';
+                        submitButton.textContent = 'LOGIN';
+                        toggleForm.textContent = "Don't have an account? Register";
+                    }
                 }
-            } else {
-                // Register
-                if (users[username]) {
-                    message.textContent = 'Username already exists!';
-                    message.className = 'message error-message';
-                } else {
-                    users[username] = encrypt(password);
-                    await saveUsers(users);
-                    message.textContent = 'Registration successful! You can now login.';
-                    message.className = 'message success-message';
-                    // Switch back to login form
-                    isLoginForm = true;
-                    formTitle.textContent = 'MEKANIKS LOGIN';
-                    submitButton.textContent = 'LOGIN';
-                    toggleForm.textContent = "Don't have an account? Register";
-                }
+            } catch (error) {
+                console.error('Authentication error:', error);
+                showMessage('An error occurred. Please try again.', 'error');
+            } finally {
+                hideLoader();
             }
         });
 
@@ -365,31 +396,49 @@
         });
 
         exportButton.addEventListener('click', async function() {
-            const users = await getUsers();
-            exportedData.value = encrypt(JSON.stringify(users));
+            showLoader();
+            try {
+                const users = await getUsers();
+                exportedData.value = encrypt(JSON.stringify(users));
+                showMessage('Data exported successfully!', 'success');
+            } catch (error) {
+                console.error('Export error:', error);
+                showMessage('Error exporting data. Please try again.', 'error');
+            } finally {
+                hideLoader();
+            }
         });
 
         importButton.addEventListener('click', async function() {
             const data = prompt("Paste the exported data here:");
             if (data) {
+                showLoader();
                 try {
                     const users = JSON.parse(decrypt(data));
                     await saveUsers(users);
                     exportedData.value = data;
-                    message.textContent = 'Data imported successfully!';
-                    message.className = 'message success-message';
+                    showMessage('Data imported successfully!', 'success');
                 } catch (error) {
-                    console.error('Error importing data:', error);
-                    message.textContent = 'Error importing data. Please check the format.';
-                    message.className = 'message error-message';
+                    console.error('Import error:', error);
+                    showMessage('Error importing data. Please check the format.', 'error');
+                } finally {
+                    hideLoader();
                 }
             }
         });
 
         window.onload = async function() {
             checkLogin();
-            const users = await getUsers();
-            exportedData.value = encrypt(JSON.stringify(users));
+            showLoader();
+            try {
+                const users = await getUsers();
+                exportedData.value = encrypt(JSON.stringify(users));
+            } catch (error) {
+                console.error('Initialization error:', error);
+                showMessage('Error initializing. Please refresh the page.', 'error');
+            } finally {
+                hideLoader();
+            }
         };
     </script>
 </body>
