@@ -72,7 +72,7 @@
             text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
         }
 
-        input {
+        input, textarea {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -83,7 +83,7 @@
             font-family: 'Roboto Mono', monospace;
         }
 
-        input:focus {
+        input:focus, textarea:focus {
             outline: none;
             box-shadow: 0 0 10px var(--accent-color);
         }
@@ -130,9 +130,16 @@
             display: none;
         }
 
-        #hiTxtContent {
+        #dataIO {
             margin-top: 20px;
-            word-wrap: break-word;
+            text-align: left;
+        }
+
+        #exportedData {
+            width: 100%;
+            height: 100px;
+            margin-top: 10px;
+            resize: vertical;
         }
     </style>
 </head>
@@ -147,7 +154,11 @@
             </form>
             <p id="message" class="message"></p>
             <p class="toggle-form" id="toggleForm">Don't have an account? Register</p>
-            <div id="hiTxtContent"></div>
+            <div id="dataIO">
+                <button id="exportButton">Export Data</button>
+                <button id="importButton">Import Data</button>
+                <textarea id="exportedData" readonly></textarea>
+            </div>
         </div>
         <div id="loginPanel" class="box">
             <h2>Welcome to Mekaniks Panel</h2>
@@ -166,7 +177,9 @@
         const submitButton = document.getElementById('submitButton');
         const welcomeMessage = document.getElementById('welcomeMessage');
         const logoutButton = document.getElementById('logoutButton');
-        const hiTxtContent = document.getElementById('hiTxtContent');
+        const exportButton = document.getElementById('exportButton');
+        const importButton = document.getElementById('importButton');
+        const exportedData = document.getElementById('exportedData');
         let isLoginForm = true;
 
         const encryptionKey = "wa~>;=uJ[:xvk4Xsj@SV6TFbN*eyWm2q#Pp&G?D!g$ZR}U";
@@ -196,8 +209,8 @@
         function saveUsers(users) {
             const encryptedData = encrypt(JSON.stringify(users));
             localStorage.setItem('hi.txt', encryptedData);
-            hiTxtContent.textContent = `hi.txt content: ${encryptedData}`;
             console.log("Data saved to 'hi.txt':", encryptedData);
+            exportedData.value = encryptedData;
         }
 
         function checkLogin() {
@@ -266,12 +279,26 @@
             loginPanel.style.display = 'none';
         });
 
-        // Check login status when page loads
+        exportButton.addEventListener('click', function() {
+            const data = localStorage.getItem('hi.txt') || '';
+            exportedData.value = data;
+        });
+
+        importButton.addEventListener('click', function() {
+            const data = prompt("Paste the exported data here:");
+            if (data) {
+                localStorage.setItem('hi.txt', data);
+                exportedData.value = data;
+                message.textContent = 'Data imported successfully!';
+                message.className = 'message success-message';
+            }
+        });
+
         window.onload = function() {
             checkLogin();
             const hiTxtData = localStorage.getItem('hi.txt');
             if (hiTxtData) {
-                hiTxtContent.textContent = `hi.txt content: ${hiTxtData}`;
+                exportedData.value = hiTxtData;
             }
         };
     </script>
