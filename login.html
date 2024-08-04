@@ -168,6 +168,11 @@
     </div>
 
     <script>
+        const REPO_OWNER = 'host360';
+        const REPO_NAME = 'website';
+        const FILE_PATH = 'users.json';
+        const GITHUB_TOKEN = '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';
+
         const loginBox = document.getElementById('loginBox');
         const loginPanel = document.getElementById('loginPanel');
         const authForm = document.getElementById('authForm');
@@ -201,16 +206,55 @@
             return result;
         }
 
-        function getUsers() {
-            const usersJson = localStorage.getItem('hi.txt');
-            return usersJson ? JSON.parse(decrypt(usersJson)) : {};
+        async function getFileContent() {
+            const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+                headers: {
+                    'Authorization': `token ${GITHUB_TOKEN}`
+                }
+            });
+            const data = await response.json();
+            return JSON.parse(decrypt(atob(data.content)));
         }
 
-        function saveUsers(users) {
-            const encryptedData = encrypt(JSON.stringify(users));
-            localStorage.setItem('hi.txt', encryptedData);
-            console.log("Data saved to 'hi.txt':", encryptedData);
-            exportedData.value = encryptedData;
+        async function updateFileContent(users) {
+            const content = btoa(encrypt(JSON.stringify(users)));
+            const currentFile = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+                headers: {
+                    'Authorization': `token ${GITHUB_TOKEN}`
+                }
+            }).then(res => res.json());
+
+            const response = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${FILE_PATH}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${GITHUB_TOKEN}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: 'Update users',
+                    content: content,
+                    sha: currentFile.sha
+                })
+            });
+            return response.ok;
+        }
+
+        async function getUsers() {
+            try {
+                return await getFileContent();
+            } catch (error) {
+                console.error('Error getting users:', error);
+                return {};
+            }
+        }
+
+        async function saveUsers(users) {
+            try {
+                await updateFileContent(users);
+                console.log("Data saved to GitHub");
+            } catch (error) {
+                console.error('Error saving users:', error);
+            }
         }
 
         function checkLogin() {
@@ -236,12 +280,12 @@
             message.textContent = '';
         });
 
-        authForm.addEventListener('submit', function(e) {
+        authForm.addEventListener('submit', async function(e) {
             e.preventDefault();
             
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            let users = getUsers();
+            let users = await getUsers();
 
             if (isLoginForm) {
                 // Login
@@ -261,7 +305,7 @@
                     message.className = 'message error-message';
                 } else {
                     users[username] = encrypt(password);
-                    saveUsers(users);
+                    await saveUsers(users);
                     message.textContent = 'Registration successful! You can now login.';
                     message.className = 'message success-message';
                     // Switch back to login form
@@ -279,27 +323,32 @@
             loginPanel.style.display = 'none';
         });
 
-        exportButton.addEventListener('click', function() {
-            const data = localStorage.getItem('hi.txt') || '';
-            exportedData.value = data;
+        exportButton.addEventListener('click', async function() {
+            const users = await getUsers();
+            exportedData.value = encrypt(JSON.stringify(users));
         });
 
-        importButton.addEventListener('click', function() {
+        importButton.addEventListener('click', async function() {
             const data = prompt("Paste the exported data here:");
             if (data) {
-                localStorage.setItem('hi.txt', data);
-                exportedData.value = data;
-                message.textContent = 'Data imported successfully!';
-                message.className = 'message success-message';
+                try {
+                    const users = JSON.parse(decrypt(data));
+                    await saveUsers(users);
+                    exportedData.value = data;
+                    message.textContent = 'Data imported successfully!';
+                    message.className = 'message success-message';
+                } catch (error) {
+                    console.error('Error importing data:', error);
+                    message.textContent = 'Error importing data. Please check the format.';
+                    message.className = 'message error-message';
+                }
             }
         });
 
-        window.onload = function() {
+        window.onload = async function() {
             checkLogin();
-            const hiTxtData = localStorage.getItem('hi.txt');
-            if (hiTxtData) {
-                exportedData.value = hiTxtData;
-            }
+            const users = await getUsers();
+            exportedData.value = encrypt(JSON.stringify(users));
         };
     </script>
 </body>
