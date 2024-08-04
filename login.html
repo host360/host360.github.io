@@ -177,7 +177,7 @@
         const REPO_OWNER = 'host360';
         const REPO_NAME = 'website';
         const FILE_PATH = 'users.json';
-        const GITHUB_TOKEN = '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';
+        const GITHUB_TOKEN = 'YOUR_GITHUB_TOKEN'; // Replace with your actual token
 
         const loginBox = document.getElementById('loginBox');
         const loginPanel = document.getElementById('loginPanel');
@@ -194,7 +194,7 @@
         const loader = document.getElementById('loader');
         let isLoginForm = true;
 
-        const encryptionKey = "wa~>;=uJ[:xvk4Xsj@SV6TFbN*eyWm2q#Pp&G?D!g$ZR}U";
+        const encryptionKey = "YOUR_ENCRYPTION_KEY"; // Replace with your actual key
 
         function encrypt(text) {
             let result = '';
@@ -444,4 +444,18 @@
                 try {
                     const users = JSON.parse(data);
                     await saveUsers(users);
-                    exportedData }
+                    exportedData.value = data;
+                    showMessage('Data imported successfully!', 'success');
+                } catch (error) {
+                    console.error('Import error:', error);
+                    showMessage('Error importing data. Please check the format.', 'error');
+                } finally {
+                    hideLoader();
+                }
+            }
+        });
+
+        window.addEventListener('load', checkLogin);
+    </script>
+</body>
+</html>
